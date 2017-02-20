@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'//添加
 
 android {
     compileSdkVersion 24
@@ -19,6 +20,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+    }
 }
 
 dependencies {
@@ -30,4 +36,14 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
-
+publish {
+    userOrg = 'hututu'//bintray.com用户名
+    groupId = 'com.hjm'//jcenter上的路径
+    artifactId = 'BottomTabBar'//项目名称
+    publishVersion = '1.0.0'//版本号
+}
+tasks.withType(Javadoc) {
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+}
