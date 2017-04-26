@@ -1,35 +1,67 @@
 package com.hjm.simple;
 
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.TextView;
 
-import com.hjm.bottomtabbar.BottomTabBar;
-import com.hjm.simple.fragment.FourFragment;
-import com.hjm.simple.fragment.OneFragment;
-import com.hjm.simple.fragment.ThreeFragment;
-import com.hjm.simple.fragment.TwoFragment;
+public class MainActivity extends AppCompatActivity implements TextWatcher {
 
-public class MainActivity extends AppCompatActivity {
-
-    private BottomTabBar mBottomTabBar;
+    private EditText wanEdt, qianEdt, baiEdt, shiEdt, geEdt;
+    private TextView resultTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);//去掉信息栏  
         setContentView(R.layout.activity_main);
 
-        mBottomTabBar = (BottomTabBar) findViewById(R.id.bottom_tab_bar);
-        mBottomTabBar.init(getSupportFragmentManager())
-                .setImgSize(90, 90)
-                .setFontSize(12)
-                .setTabPadding(4, 6, 10)
-                .setChangeColor(Color.GREEN, Color.RED)
-                .addTabItem("第一项", R.mipmap.ic_launcher, OneFragment.class)
-                .addTabItem("第二项", R.mipmap.ic_launcher, TwoFragment.class)
-                .addTabItem("第三项", R.mipmap.ic_launcher, ThreeFragment.class)
-                .addTabItem("第四项", R.mipmap.ic_launcher, FourFragment.class)
-                .setTabBarBackgroundColor(Color.WHITE)
-                .isShowDivider(false);
+        wanEdt = (EditText) findViewById(R.id.wan_edt);
+        qianEdt = (EditText) findViewById(R.id.qian_edt);
+        baiEdt = (EditText) findViewById(R.id.bai_edt);
+        shiEdt = (EditText) findViewById(R.id.shi_edt);
+        geEdt = (EditText) findViewById(R.id.ge_edt);
+        resultTv = (TextView) findViewById(R.id.result_tv);
+
+        wanEdt.addTextChangedListener(this);
+        qianEdt.addTextChangedListener(this);
+        baiEdt.addTextChangedListener(this);
+        shiEdt.addTextChangedListener(this);
+        geEdt.addTextChangedListener(this);
+    }
+
+    private int getNumber() {
+        return stringToInt(wanEdt.getText().toString()) * 10000 +
+                stringToInt(qianEdt.getText().toString()) * 1000 +
+                stringToInt(baiEdt.getText().toString()) * 100 +
+                stringToInt(shiEdt.getText().toString()) * 10 +
+                stringToInt(geEdt.getText().toString());
+    }
+
+    private int stringToInt(String s) {
+        if (TextUtils.isEmpty(s))
+            return 0;
+        else
+            return Integer.parseInt(s);
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        resultTv.setText(getNumber() + "");
     }
 }

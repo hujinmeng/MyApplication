@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">月色</string>
+    
+    <!--提示性文字-->
+    <string name="wan_name">请输入万位数</string>
+    <string name="qian_name">请输入千位数</string>
+    <string name="bai_name">请输入百位数</string>
+    <string name="shi_name">请输入十位数</string>
+    <string name="ge_name">请输入个位数</string>
+    <string name="result_tv_name">这里将会出现你想要的结果</string>
 </resources>

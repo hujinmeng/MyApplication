@@ -16,10 +16,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.hjm.bottomtabbar.custom.CustomFragmentTabHost;
 import com.hjm.bottomtabbar.util.TintUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by hjm on 2017/2/18/018.
@@ -51,6 +55,17 @@ public class BottomTabBar extends LinearLayout {
     private int dividerBackgroundColor = Color.parseColor("#CCCCCC");
     //BottomTabBar的整体背景
     private int tabBarBackgroundColor = Color.parseColor("#FFFFFF");
+    //tabId集合
+    private List<String> tabIdList = new ArrayList<>();
+
+    /**
+     * Tab标签切换监听
+     */
+    public interface OnTabChangeListener {
+        void onTabChange(int position, String name);
+    }
+
+    private OnTabChangeListener listener;
 
     public BottomTabBar(Context context) {
         super(context);
@@ -110,6 +125,15 @@ public class BottomTabBar extends LinearLayout {
         mTabHost.setup(context, manager, R.id.realtabcontent);
         mTabHost.setBackgroundColor(tabBarBackgroundColor);
         mTabHost.getTabWidget().setDividerDrawable(null);
+        tabIdList.clear();
+        mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                if (listener != null) {
+                    listener.onTabChange(tabIdList.indexOf(tabId), tabId);
+                }
+            }
+        });
 
         mDivider = mLayout.findViewById(R.id.split);
         if (isShowDivider) {
@@ -121,6 +145,13 @@ public class BottomTabBar extends LinearLayout {
             mDivider.setVisibility(GONE);
         }
 
+        return this;
+    }
+
+    public BottomTabBar setOnTabChangeListener(OnTabChangeListener listener) {
+        if (listener != null) {
+            this.listener = listener;
+        }
         return this;
     }
 
@@ -144,9 +175,10 @@ public class BottomTabBar extends LinearLayout {
      * @param fragmentClass fragment
      * @return
      */
-    public BottomTabBar addTabItem(String name, Drawable drawable, Class fragmentClass) {
-        mTabHost.addTab(mTabHost.newTabSpec(TextUtils.isEmpty(name) ? "TAB" : name)
-                .setIndicator(getTabItemView(TextUtils.isEmpty(name) ? "TAB" : name, drawable)), fragmentClass, null);
+    public BottomTabBar addTabItem(final String name, Drawable drawable, Class fragmentClass) {
+        tabIdList.add(TextUtils.isEmpty(name) ? fragmentClass.getName() : name);
+        mTabHost.addTab(mTabHost.newTabSpec(TextUtils.isEmpty(name) ? fragmentClass.getName() : name)
+                .setIndicator(getTabItemView(TextUtils.isEmpty(name) ? fragmentClass.getName() : name, drawable)), fragmentClass, null);
         return this;
     }
 

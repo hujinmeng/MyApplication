@@ -1,11 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg"
+    android:orientation="vertical">
 
-    <com.hjm.bottomtabbar.BottomTabBar
-        android:id="@+id/bottom_tab_bar"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/wan_edt"
+            style="@style/edt_style"
+            android:hint="@string/wan_name" />
+
+        <TextView
+            style="@style/tv_style"
+            android:text="万" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/qian_edt"
+            style="@style/edt_style"
+            android:hint="@string/qian_name" />
+
+        <TextView
+            style="@style/tv_style"
+            android:text="千" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/bai_edt"
+            style="@style/edt_style"
+            android:hint="@string/bai_name" />
+
+        <TextView
+            style="@style/tv_style"
+            android:text="百" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/shi_edt"
+            style="@style/edt_style"
+            android:hint="@string/shi_name" />
+
+        <TextView
+            style="@style/tv_style"
+            android:text="十" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/ge_edt"
+            style="@style/edt_style"
+            android:hint="@string/ge_name" />
+
+        <TextView
+            style="@style/tv_style"
+            android:text="个" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/result_tv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:hint="@string/result_tv_name"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textSize="20sp" />
 
-</RelativeLayout>
+</LinearLayout>
