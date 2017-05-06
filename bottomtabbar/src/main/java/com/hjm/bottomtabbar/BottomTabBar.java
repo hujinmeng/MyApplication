@@ -1,11 +1,19 @@
 package com.hjm.bottomtabbar;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -281,6 +289,28 @@ public class BottomTabBar extends LinearLayout {
         return this;
     }
 
+    /**
+     * 设置BottomTabBar的整体背景
+     *
+     * @param resid 背景图片id
+     * @return
+     */
+    public BottomTabBar setTabBarBackgroundResource(@DrawableRes int resid){
+        mTabHost.setBackgroundResource(resid);
+        return this;
+    }
+//    /**
+//     * 设置BottomTabBar的整体背景
+//     * api 16开始才支持
+//     *
+//     * @param drawable 背景图片
+//     * @return
+//     */
+//    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+//    public BottomTabBar setTabBarBackgroundResource(Drawable drawable){
+//        mTabHost.setBackground(drawable);
+//        return this;
+//    }
     /**
      * 是否显示分割线
      *
