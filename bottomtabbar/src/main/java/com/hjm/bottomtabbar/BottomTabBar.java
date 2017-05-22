@@ -1,24 +1,17 @@
 package com.hjm.bottomtabbar;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
+import android.graphics.drawable.StateListDrawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -175,6 +168,10 @@ public class BottomTabBar extends LinearLayout {
         return addTabItem(name, ContextCompat.getDrawable(context, imgId), fragmentClass);
     }
 
+    public BottomTabBar addTabItem(String name, int imgIdSelect, int imgIdUnSelect, Class fragmentClass) {
+        return addTabItem(name, ContextCompat.getDrawable(context, imgIdSelect), ContextCompat.getDrawable(context, imgIdUnSelect), fragmentClass);
+    }
+
     /**
      * 添加TabItem
      *
@@ -190,6 +187,13 @@ public class BottomTabBar extends LinearLayout {
         return this;
     }
 
+    public BottomTabBar addTabItem(final String name, Drawable drawableSelect, Drawable drawableUnSelect, Class fragmentClass) {
+        tabIdList.add(TextUtils.isEmpty(name) ? fragmentClass.getName() : name);
+        mTabHost.addTab(mTabHost.newTabSpec(TextUtils.isEmpty(name) ? fragmentClass.getName() : name)
+                .setIndicator(getTabItemView(TextUtils.isEmpty(name) ? fragmentClass.getName() : name, drawableSelect, drawableUnSelect)), fragmentClass, null);
+        return this;
+    }
+
     private View getTabItemView(String name, Drawable drawable) {
         View view = LayoutInflater.from(context).inflate(R.layout.tab_item, null);
 
@@ -199,6 +203,39 @@ public class BottomTabBar extends LinearLayout {
         ivParams.gravity = Gravity.CENTER_HORIZONTAL;
         iv.setLayoutParams(ivParams);
         iv.setImageDrawable(TintUtil.setStateListTintColor(drawable, unSelectColor, selectColor));
+
+        TextView tv = (TextView) view.findViewById(R.id.tab_item_tv);
+        tv.setText(name);
+        tv.setPadding(0, (int) fontImgPadding, 0, (int) paddingBottom);
+        tv.setTextSize(fontSize);
+        int[][] states = new int[3][];
+        states[0] = new int[]{android.R.attr.state_pressed};
+        states[1] = new int[]{android.R.attr.state_selected};
+        states[2] = new int[]{};
+        int[] colors = new int[]{selectColor, selectColor, unSelectColor};//colorSelect跟states[0]对应，color跟states[2]对应，以此类推
+        ColorStateList csl = new ColorStateList(states, colors);
+        tv.setTextColor(csl);
+
+        return view;
+    }
+
+    private View getTabItemView(String name, Drawable drawableSelect, Drawable drawableUnSelect) {
+        View view = LayoutInflater.from(context).inflate(R.layout.tab_item, null);
+
+        ImageView iv = (ImageView) view.findViewById(R.id.tab_item_iv);
+        LayoutParams ivParams = new LayoutParams(imgWidth == 0 ? LayoutParams.WRAP_CONTENT : (int) imgWidth, imgHeight == 0 ? LayoutParams.WRAP_CONTENT : (int) imgHeight);
+        ivParams.topMargin = (int) paddingTop;
+        ivParams.gravity = Gravity.CENTER_HORIZONTAL;
+        iv.setLayoutParams(ivParams);
+
+        StateListDrawable drawable = new StateListDrawable();
+        drawable.addState(new int[]{android.R.attr.state_pressed},
+                drawableSelect);
+        drawable.addState(new int[]{android.R.attr.state_selected},
+                drawableSelect);
+        drawable.addState(new int[]{},
+                drawableUnSelect);
+        iv.setImageDrawable(drawable);
 
         TextView tv = (TextView) view.findViewById(R.id.tab_item_tv);
         tv.setText(name);
@@ -295,7 +332,7 @@ public class BottomTabBar extends LinearLayout {
      * @param resid 背景图片id
      * @return
      */
-    public BottomTabBar setTabBarBackgroundResource(@DrawableRes int resid){
+    public BottomTabBar setTabBarBackgroundResource(@DrawableRes int resid) {
         mTabHost.setBackgroundResource(resid);
         return this;
     }
@@ -311,6 +348,7 @@ public class BottomTabBar extends LinearLayout {
 //        mTabHost.setBackground(drawable);
 //        return this;
 //    }
+
     /**
      * 是否显示分割线
      *
