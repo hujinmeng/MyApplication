@@ -63,7 +63,7 @@ public class BottomTabBar extends LinearLayout {
      * Tab标签切换监听
      */
     public interface OnTabChangeListener {
-        void onTabChange(int position, String name);
+        void onTabChange(int position, String name, View view);
     }
 
     private OnTabChangeListener listener;
@@ -131,7 +131,7 @@ public class BottomTabBar extends LinearLayout {
             @Override
             public void onTabChanged(String tabId) {
                 if (listener != null) {
-                    listener.onTabChange(tabIdList.indexOf(tabId), tabId);
+                    listener.onTabChange(mTabHost.getCurrentTab(), tabId, mTabHost.getCurrentTabView());
                 }
             }
         });

@@ -1,11 +1,15 @@
 package com.hjm.simple;
 
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.PopupWindow;
 
 import com.hjm.bottomtabbar.BottomTabBar;
 import com.hjm.simple.fragment.FourFragment;
@@ -38,10 +42,28 @@ public class MainActivity extends AppCompatActivity {
                 .isShowDivider(false)
                 .setOnTabChangeListener(new BottomTabBar.OnTabChangeListener() {
                     @Override
-                    public void onTabChange(int position, String name) {
+                    public void onTabChange(int position, String name, View view) {
                         Log.i("TGA", "位置：" + position + "      选项卡：" + name);
+                        if (position == 2) {
+                            showTree(view);
+                        }
                     }
                 });
     }
+
+    private void showTree(View view) {
+        // 获取自定义布局文件activity_popupwindow_left.xml的视图
+        View popupWindow_view = getLayoutInflater().inflate(R.layout.test_pop, null, false);
+        // 创建PopupWindow实例,200,LayoutParams.MATCH_PARENT分别是宽度和高度
+        PopupWindow window = new PopupWindow(popupWindow_view, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        // 设置popWindow弹出窗体可点击，这句话必须添加，并且是true
+        window.setFocusable(true);
+        // 实例化一个ColorDrawable颜色为半透明
+        ColorDrawable dw = new ColorDrawable(0xb0000000);
+        window.setBackgroundDrawable(dw);
+        // 在底部显示
+        window.showAtLocation(view, Gravity.BOTTOM, 0, 0);
+    }
+
 
 }
