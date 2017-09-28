@@ -397,6 +397,17 @@ public class BottomTabBar extends LinearLayout {
         return this;
     }
 
+    /**
+     * 设置选中那个Tab
+     *
+     * @param index
+     * @return
+     */
+    public BottomTabBar setCurrentTab(int index) {
+        mTabHost.setCurrentTab(index);
+        return this;
+    }
+
     //=========================参数设置END===========================================
 
     //=========================工具类START========================================

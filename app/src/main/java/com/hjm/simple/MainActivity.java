@@ -2,9 +2,8 @@ package com.hjm.simple;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -40,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
                 .addTabItem("第四项", R.mipmap.ic_launcher, FourFragment.class)
                 .setTabBarBackgroundResource(R.mipmap.ic_launcher)
                 .isShowDivider(false)
+                .setCurrentTab(2)
                 .setOnTabChangeListener(new BottomTabBar.OnTabChangeListener() {
                     @Override
                     public void onTabChange(int position, String name, View view) {
@@ -63,6 +63,14 @@ public class MainActivity extends AppCompatActivity {
         window.setBackgroundDrawable(dw);
         // 在底部显示
         window.showAtLocation(view, Gravity.BOTTOM, 0, 0);
+
+
+        popupWindow_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBottomBar.setCurrentTab(0);
+            }
+        });
     }
 
 
