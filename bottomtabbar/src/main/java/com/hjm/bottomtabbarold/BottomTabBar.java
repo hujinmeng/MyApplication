@@ -1,4 +1,4 @@
-package com.hjm.bottomtabbar;
+package com.hjm.bottomtabbarold;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -20,14 +20,15 @@ import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-import com.hjm.bottomtabbar.custom.CustomFragmentTabHost;
-import com.hjm.bottomtabbar.util.TintUtil;
+import com.hjm.bottomtabbarold.custom.CustomFragmentTabHost;
+import com.hjm.bottomtabbarold.util.TintUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by hjm on 2017/2/18/018.
+ * Created by hjm on 2017/2/18  version 1.0.0
+ * update by hjm on 2018/2/11  version 1.2.0
  */
 public class BottomTabBar extends LinearLayout {
 
@@ -37,7 +38,6 @@ public class BottomTabBar extends LinearLayout {
     private CustomFragmentTabHost mTabHost;
     //分割线
     private View mDivider;
-
     //图片的宽高
     private float imgWidth = 0, imgHeight = 0;
     //文字尺寸
@@ -156,6 +156,7 @@ public class BottomTabBar extends LinearLayout {
         return this;
     }
 
+    //=========================核心设置START========================================
     /**
      * 添加TabItem
      *
@@ -181,30 +182,42 @@ public class BottomTabBar extends LinearLayout {
      * @return
      */
     public BottomTabBar addTabItem(final String name, Drawable drawable, Class fragmentClass) {
+        return addTabItem(name, drawable, imgWidth, imgHeight, fragmentClass);
+    }
+
+    public BottomTabBar addTabItem(final String name,
+                                   Drawable drawableSelect, Drawable drawableUnSelect, Class fragmentClass) {
+        return addTabItem(name, drawableSelect, drawableUnSelect, imgWidth, imgHeight, fragmentClass);
+    }
+
+    public BottomTabBar addTabItem(final String name, Drawable drawable, float width, float height, Class fragmentClass) {
         tabIdList.add(TextUtils.isEmpty(name) ? fragmentClass.getName() : name);
         mTabHost.addTab(mTabHost.newTabSpec(TextUtils.isEmpty(name) ? fragmentClass.getName() : name)
-                .setIndicator(getTabItemView(TextUtils.isEmpty(name) ? fragmentClass.getName() : name, drawable)), fragmentClass, null);
+                        .setIndicator(getTabItemView(TextUtils.isEmpty(name) ? fragmentClass.getName() : name,
+                                drawable, width, height)), fragmentClass, null);
         return this;
     }
 
-    public BottomTabBar addTabItem(final String name, Drawable drawableSelect, Drawable drawableUnSelect, Class fragmentClass) {
+    public BottomTabBar addTabItem(final String name, Drawable drawableSelect, Drawable drawableUnSelect,
+                                   float width, float height, Class fragmentClass) {
         tabIdList.add(TextUtils.isEmpty(name) ? fragmentClass.getName() : name);
         mTabHost.addTab(mTabHost.newTabSpec(TextUtils.isEmpty(name) ? fragmentClass.getName() : name)
-                .setIndicator(getTabItemView(TextUtils.isEmpty(name) ? fragmentClass.getName() : name, drawableSelect, drawableUnSelect)), fragmentClass, null);
+                .setIndicator(getTabItemView(TextUtils.isEmpty(name) ? fragmentClass.getName() : name,
+                        drawableSelect, drawableUnSelect, width, height)), fragmentClass, null);
         return this;
     }
 
-    private View getTabItemView(String name, Drawable drawable) {
+    private View getTabItemView(String name, Drawable drawable, float width, float height) {
         View view = LayoutInflater.from(context).inflate(R.layout.tab_item, null);
 
-        ImageView iv = (ImageView) view.findViewById(R.id.tab_item_iv);
-        LayoutParams ivParams = new LayoutParams(imgWidth == 0 ? LayoutParams.WRAP_CONTENT : (int) imgWidth, imgHeight == 0 ? LayoutParams.WRAP_CONTENT : (int) imgHeight);
+        ImageView iv = view.findViewById(R.id.tab_item_iv);
+        LayoutParams ivParams = new LayoutParams(width == 0 ? LayoutParams.WRAP_CONTENT : (int) width, height == 0 ? LayoutParams.WRAP_CONTENT : (int) height);
         ivParams.topMargin = (int) paddingTop;
         ivParams.gravity = Gravity.CENTER_HORIZONTAL;
         iv.setLayoutParams(ivParams);
         iv.setImageDrawable(TintUtil.setStateListTintColor(drawable, unSelectColor, selectColor));
 
-        TextView tv = (TextView) view.findViewById(R.id.tab_item_tv);
+        TextView tv = view.findViewById(R.id.tab_item_tv);
         tv.setText(name);
         tv.setPadding(0, (int) fontImgPadding, 0, (int) paddingBottom);
         tv.setTextSize(fontSize);
@@ -219,11 +232,11 @@ public class BottomTabBar extends LinearLayout {
         return view;
     }
 
-    private View getTabItemView(String name, Drawable drawableSelect, Drawable drawableUnSelect) {
+    private View getTabItemView(String name, Drawable drawableSelect, Drawable drawableUnSelect, float width, float height) {
         View view = LayoutInflater.from(context).inflate(R.layout.tab_item, null);
 
         ImageView iv = (ImageView) view.findViewById(R.id.tab_item_iv);
-        LayoutParams ivParams = new LayoutParams(imgWidth == 0 ? LayoutParams.WRAP_CONTENT : (int) imgWidth, imgHeight == 0 ? LayoutParams.WRAP_CONTENT : (int) imgHeight);
+        LayoutParams ivParams = new LayoutParams(width == 0 ? LayoutParams.WRAP_CONTENT : (int) width, height == 0 ? LayoutParams.WRAP_CONTENT : (int) height);
         ivParams.topMargin = (int) paddingTop;
         ivParams.gravity = Gravity.CENTER_HORIZONTAL;
         iv.setLayoutParams(ivParams);

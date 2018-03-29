@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BottomTabBar">
+        <!--BottomTabBar的整体背景-->
+        <attr name="tab_bar_background" format="color" />
+        <!--图片宽度-->
+        <attr name="tab_img_width" format="dimension" />
+        <!--图片高度-->
+        <attr name="tab_img_height" format="dimension" />
+        <!--文字尺寸-->
+        <attr name="tab_font_size" format="dimension" />
+        <!--上边距-->
+        <attr name="tab_padding_top" format="dimension" />
+        <!--图片文字间隔-->
+        <attr name="tab_img_font_padding" format="dimension" />
+        <!--下边距-->
+        <attr name="tab_padding_bottom" format="dimension" />
+        <!--是否显示分割线-->
+        <attr name="tab_isshow_divider" format="boolean" />
+        <!--分割线背景-->
+        <attr name="tab_divider_background" format="color" />
+        <!--选中的颜色-->
+        <attr name="tab_selected_color" format="color" />
+        <!--未选中的颜色-->
+        <attr name="tab_unselected_color" format="color" />
+    </declare-styleable>
+</resources>

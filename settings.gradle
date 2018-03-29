@@ -1,1 +1,1 @@
-include ':app', ':bottomtabbar'
+include ':app', ':bottomtabbar', ':bottomtabbar2'

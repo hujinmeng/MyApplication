@@ -1,4 +1,4 @@
-package com.hjm.bottomtabbar;
+package com.hjm.bottomtabbarold;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

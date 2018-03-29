@@ -5,8 +5,6 @@ package com.hjm.bottomtabbar.custom;
  * 功能描述：修改过的FragmentTabHost,保存fragment实例不销毁
  */
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -22,6 +20,8 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TabWidget;
+
+import java.util.ArrayList;
 
 public class CustomFragmentTabHost extends TabHost implements TabHost.OnTabChangeListener {
 

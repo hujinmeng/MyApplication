@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="1px" />
 
-    <com.hjm.bottomtabbarold.custom.CustomFragmentTabHost
+    <com.hjm.bottomtabbar.custom.CustomFragmentTabHost
         android:id="@android:id/tabhost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -26,7 +26,6 @@
             android:layout_height="0dp"
             android:layout_weight="0" />
 
-    </com.hjm.bottomtabbarold.custom.CustomFragmentTabHost>
-
+    </com.hjm.bottomtabbar.custom.CustomFragmentTabHost>
 
 </LinearLayout>
