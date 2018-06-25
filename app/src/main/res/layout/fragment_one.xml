@@ -11,4 +11,25 @@
         android:text="OneFragment"
         android:textSize="50dp" />
 
+    <TextView
+        android:id="@+id/show"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="显示"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/hide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="隐藏"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp" />
+
 </FrameLayout>

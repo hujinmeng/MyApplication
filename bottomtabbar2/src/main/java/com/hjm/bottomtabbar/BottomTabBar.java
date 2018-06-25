@@ -38,7 +38,9 @@ import java.util.List;
 import static android.widget.RelativeLayout.CENTER_HORIZONTAL;
 
 /**
- * Created by hjm on 2018-3-6.
+ * Created by hjm on 2018-03-06 version 1.2.0
+ *  Update by hjm on 2018-04-12 version 1.2.1
+ *  Update by hjm on 2018-06-25 version 1.2.2
  */
 public class BottomTabBar extends LinearLayout {
 
@@ -92,7 +94,7 @@ public class BottomTabBar extends LinearLayout {
     //当前屏幕尺寸
     private double realWidth, realHeight;
     //标准屏幕尺寸
-    private double designWidth, designHeight;
+    private double designWidth = -1, designHeight = -1;
     /*=====================默认样式定义 End==========================*/
 
 
@@ -133,6 +135,7 @@ public class BottomTabBar extends LinearLayout {
             attributes.recycle();
         }
     }
+
     /*=====================构造方法 End=============================*/
 
 
@@ -170,13 +173,38 @@ public class BottomTabBar extends LinearLayout {
             e.printStackTrace();
         }
 
-        //尺寸相关部分适配
-        imgWidth = px2designWidthPx(imgWidth);
-        imgHeight = px2designHeightPx(imgHeight);
-        paddingTop = px2designHeightPx(paddingTop);
-        paddingBottom = px2designHeightPx(paddingBottom);
-        fontImgPadding = px2designHeightPx(fontImgPadding);
+//        //尺寸相关部分适配
+//        imgWidth = px2designWidthPx(imgWidth);
+//        imgHeight = px2designHeightPx(imgHeight);
+//        paddingTop = px2designHeightPx(paddingTop);
+//        paddingBottom = px2designHeightPx(paddingBottom);
+//        fontImgPadding = px2designHeightPx(fontImgPadding);
 
+        mLayout = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.bottom_tab_bar, null);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        mLayout.setLayoutParams(layoutParams);
+        addView(mLayout);
+
+        mTabHost = mLayout.findViewById(android.R.id.tabhost);
+        mTabHost.setup(context, manager, R.id.realtabcontent);
+        mTabHost.setBackgroundColor(tabBarBackgroundColor);
+        mTabHost.getTabWidget().setDividerDrawable(null);
+        tabIdList.clear();
+        mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                if (listener != null) {
+                    listener.onTabChange(mTabHost.getCurrentTab(), tabId, mTabHost.getCurrentTabView());
+                }
+            }
+        });
+
+        mDivider = mLayout.findViewById(R.id.split);
+        setDividerColor(dividerBackgroundColor);
+        return this;
+    }
+
+    public BottomTabBar init(FragmentManager manager) {
         mLayout = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.bottom_tab_bar, null);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         mLayout.setLayoutParams(layoutParams);
@@ -214,8 +242,8 @@ public class BottomTabBar extends LinearLayout {
      * @return
      */
     public BottomTabBar setImgSize(double width, double height) {
-        this.imgWidth = px2designWidthPx(width);
-        this.imgHeight = px2designHeightPx(height);
+        this.imgWidth = width;
+        this.imgHeight = height;
         return this;
     }
 
@@ -241,9 +269,9 @@ public class BottomTabBar extends LinearLayout {
      * @return
      */
     public BottomTabBar setTabPadding(double top, double middle, double bottom) {
-        this.paddingTop = px2designHeightPx(top);
-        this.fontImgPadding = px2designHeightPx(middle);
-        this.paddingBottom = px2designHeightPx(bottom);
+        this.paddingTop = top;
+        this.fontImgPadding = middle;
+        this.paddingBottom = bottom;
         return this;
     }
 
@@ -322,6 +350,15 @@ public class BottomTabBar extends LinearLayout {
             mTabHost.setBackgroundDrawable(drawable);
         }
         return this;
+    }
+
+    /**
+     * 获取底部TabBar部分
+     *
+     * @return
+     */
+    public CustomFragmentTabHost getTabBar() {
+        return mTabHost;
     }
     /*=====================属性设置 End=============================*/
 
@@ -403,13 +440,12 @@ public class BottomTabBar extends LinearLayout {
     /*=====================工具类Start==============================*/
     private View getTabItemView(String name, Drawable drawableSelect, Drawable drawableUnSelect) {
         RelativeLayout view = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.tab_item, null);
-        view.setPadding(0, (int) paddingTop, 0, (int) paddingBottom);
+        view.setPadding(0, (int) px2designHeightPx(paddingTop), 0, (int) px2designHeightPx(paddingBottom));
 
         ImageView iv = view.findViewById(R.id.tab_item_iv);
-        Log.i("hjm===", imgWidth + "   " + imgHeight);
-        RelativeLayout.LayoutParams ivParams = new RelativeLayout.LayoutParams(imgWidth == 0 ?
-                RelativeLayout.LayoutParams.WRAP_CONTENT : (int) imgWidth, imgHeight == 0 ?
-                RelativeLayout.LayoutParams.WRAP_CONTENT : (int) imgHeight);
+        RelativeLayout.LayoutParams ivParams = new RelativeLayout.LayoutParams(
+                imgWidth == 0 ? RelativeLayout.LayoutParams.WRAP_CONTENT : (int) px2designWidthPx(imgWidth),
+                imgHeight == 0 ? RelativeLayout.LayoutParams.WRAP_CONTENT : (int) px2designHeightPx(imgHeight));
         ivParams.addRule(CENTER_HORIZONTAL);
         iv.setLayoutParams(ivParams);
 
@@ -428,8 +464,12 @@ public class BottomTabBar extends LinearLayout {
 
         TextView tv = view.findViewById(R.id.tab_item_tv);
         tv.setText(name);
-        tv.setPadding(0, (int) fontImgPadding, 0, 0);
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, (int) fontSize);
+        tv.setPadding(0, (int) px2designHeightPx(fontImgPadding), 0, 0);
+        if (realHeight == -1 && realWidth == -1) {
+            tv.setTextSize((int) fontSize);
+        } else {
+            tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) px2designHeightPx(fontSize));
+        }
         int[][] states = new int[3][];
         states[0] = new int[]{android.R.attr.state_pressed};
         states[1] = new int[]{android.R.attr.state_selected};
@@ -438,17 +478,33 @@ public class BottomTabBar extends LinearLayout {
         ColorStateList csl = new ColorStateList(states, colors);
         tv.setTextColor(csl);
 
+        if (isShowDivider) {
+            mDivider.setVisibility(VISIBLE);
+        } else {
+            mDivider.setVisibility(GONE);
+        }
+
         TextView spot = view.findViewById(R.id.little_red_spot);
         spots.add(spot);
         return view;
     }
 
     private double px2designWidthPx(double px) {
-        return px * 1.0f / designWidth * realWidth;
+        if (designHeight == -1 && designWidth == -1) {
+            float scale = context.getResources().getDisplayMetrics().density;
+            return (int) (px * scale + 0.5f);
+        } else {
+            return px * 1.0f / designWidth * realWidth;
+        }
     }
 
     private double px2designHeightPx(double px) {
-        return px * 1.0f / designHeight * realHeight;
+        if (designHeight == -1 && designWidth == -1) {
+            float scale = context.getResources().getDisplayMetrics().density;
+            return (int) (px * scale + 0.5f);
+        } else {
+            return px * 1.0f / designHeight * realHeight;
+        }
     }
     /*=====================工具类 End===============================*/
 }

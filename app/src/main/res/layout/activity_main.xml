@@ -7,13 +7,19 @@
 
     <com.hjm.bottomtabbar.BottomTabBar
         android:id="@+id/bottom_bar"
-        hjm:tab_font_size="14px"
-        hjm:tab_padding_bottom="5px"
-        hjm:tab_padding_top="5px"
-        hjm:tab_img_width="70px"
-        hjm:tab_img_height="70px"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        hjm:tab_bar_background="#FFFFFF"
+        hjm:tab_divider_background="#373737"
+        hjm:tab_font_size="28px"
+        hjm:tab_img_font_padding="6dp"
+        hjm:tab_img_height="50px"
+        hjm:tab_img_width="50px"
+        hjm:tab_isshow_divider="true"
+        hjm:tab_padding_bottom="4px"
+        hjm:tab_padding_top="10px"
+        hjm:tab_selected_color="#2784E7"
+        hjm:tab_unselected_color="#282828">
 
     </com.hjm.bottomtabbar.BottomTabBar>
 </LinearLayout>
